@@ -1,0 +1,94 @@
+from sklearn.linear_model import LinearRegression,LogisticRegression
+
+
+
+num_iter=100
+lr=0.0001
+
+m1=0.0
+m2=0.0
+c=0.0
+
+m1_history=[]
+m2_history=[]
+c_history=[]
+history_cost=[]
+
+for i in range(num_iter):
+    y_pred=m1*x1+m2*x2+c
+    error=y_pred-y
+    cost=0.5*np.mean(error**2)
+
+    m_deriv1=np.mean((y_pred-y)*x1)
+    m_deriv2=np.mean((y_pred-y)*x2)
+    c_deriv=np.mean((y_pred-y))
+
+    m1 -= lr*m_deriv1
+    m2 -= lr*m_deriv2
+    c -= lr*c_deriv
+
+    history_cost.append(cost)
+    m1_history.append(m1)
+    m2_history.append(m2)
+    c_history.append(c)
+
+#plt.plot(x1,y,"ro")
+print("Final slope:",m1)
+print("Final slope:",m2)
+print("Final intercept:",c)
+
+x_val1,x_val2=map(int,(input("Enter the age and experience:").split(' ')))
+
+y_pred_final=x_val1*m1+x_val2*m2+c
+
+#plt.plot(x1,y_pred_final,"ro")
+#plt.plot(x2,y_pred_final,"bo")
+plt.show()
+print(y_pred_final)
+
+
+
+
+
+/////
+
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+x = np.array(data.iloc[:, 0]).reshape((-1, 1))
+y = np.array(data.iloc[:, 1])
+
+model = LinearRegression().fit(x, y)
+
+# Print the Intercept:
+print('intercept:', model.intercept_)
+c = model.intercept_
+
+# Print the Slope:
+print('slope:', model.coef_)
+m = model.coef_
+
+# Predict a Response and print it:
+y_pred = model.predict(x)
+plt.figure()
+plt.plot(x,y,'ro')
+x_line = np.linspace(0,100,100)
+y_line = m*x_line + c
+plt.plot(x_line, y_line)
+
+
+
+//////////SIGMOID
+b0_final=b0new
+b1_final=b1new
+
+
+#for i in range(10):
+sigmoid=1/(1+math.exp(-1*(b0_final+b1_final*spending[3
+                                                     ])))
+
+print(sigmoid)
+if sigmoid>=0.5:
+    print("Person spending and using card")
+else:
+    print("Person spending and not using card")
