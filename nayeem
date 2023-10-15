@@ -1,0 +1,40 @@
+import numpy as np
+import pandas as pd
+from sklearn.decomposition import TruncatedSVD,PCA
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+from matplotlib import pyplot as plt
+from sklearn import tree
+
+
+df=pd.read_csv("/content/heart.csv")
+x=df.iloc[:,[2,3,4,5,6]].values
+y=df.iloc[:,13].values
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.25,random_state=0)
+
+n_components=5
+svd=TruncatedSVD(n_components=n_components)
+x_train=svd.fit_transform(x_train)
+x_test=svd.transform(x_test)
+np.random.seed(2)
+clf=DecisionTreeClassifier()
+clf.fit(x_train,y_train)
+y_pred=clf.predict(x_test)
+
+acc=accuracy_score(y_test,y_pred)
+print(acc)
+
+n_components=5
+pca=PCA(n_components=n_components)
+x_train=pca.fit_transform(x_train)
+x_test=pca.transform(x_test)
+
+clf=DecisionTreeClassifier()
+clf.fit(x_train,y_train)
+y_pred=clf.predict(x_test)
+fig = plt.figure(figsize=(25,20))
+tree.plot_tree(clf,filled=True)
+
+acc=accuracy_score(y_test,y_pred)
+print(acc)
