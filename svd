@@ -1,0 +1,78 @@
+SVD
+
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from scipy.linalg import svd
+
+# Step 1: Import necessary libraries
+
+# Step 2: Load the CSV dataset
+data = pd.read_csv('car_data.csv')  # Replace 'your_dataset.csv' with your CSV file's path
+
+# Step 3: Preprocess the data (if necessary)
+
+# Example: Assuming you have a DataFrame with features in columns
+# and you want to standardize the data before performing SVD
+columns_to_drop = ['Gender', 'Purchased','User ID']
+X = data.drop(columns=columns_to_drop,axis = 1)
+Y = [data['Age'],data['AnnualSalary']]
+print(Y)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(Y)
+
+# Step 4: Perform SVD using SciPy
+U, S, VT = svd(X_scaled)
+
+# U: Left singular vectors
+# S: Singular values
+# VT: Right singular vectors
+
+# You can access the singular values and the components as needed for your analysis
+print("Singular Values:")
+print(S)
+print("Left Singular Vectors (U):")
+print(U)
+print("Right Singular Vectors (VT):")
+print(VT)
+
+SVD with decision Tree
+import sklearn.tree as tree
+import pandas as pd
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+# Load the dataset
+dataset = pd.read_csv('/content/sample_data/california_housing_test.csv')
+dataset
+print(dataset.corr())
+x=dataset.iloc[:,0:6]
+y=dataset.iloc[:,6]
+
+import numpy as np
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.decomposition import TruncatedSVD
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Sample data (replace with your dataset)
+X, y = np.random.rand(100, 10), np.random.randint(2, size=100)
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Perform SVD dimension reduction
+n_components = 5  # Number of components to keep
+svd = TruncatedSVD(n_components=n_components)
+X_train_svd = svd.fit_transform(X_train)
+X_test_svd = svd.transform(X_test)
+
+# Create and train a decision tree classifier
+clf = DecisionTreeClassifier()
+clf.fit(X_train_svd, y_train)
+
+# Make predictions
+y_pred = clf.predict(X_test_svd)
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy with SVD: {accuracy}")
