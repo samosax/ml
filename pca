@@ -1,0 +1,74 @@
+PCA
+
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+
+data = pd.read_csv('car_data.csv')
+
+columns_to_drop = ['Gender', 'Purchased','User ID']
+X = data.drop(columns=columns_to_drop,axis = 1)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+components_no = int(input("Enter the number of components:"))
+pca = PCA(n_components = components_no)
+x_pca = pca.fit_transform(X_scaled)
+principal_components = pca.components_
+explained_variance = pca.explained_variance_ratio_
+
+# print(x_pca)
+
+print("Principal Components:")
+print(principal_components)
+print("Explained Variance:")
+print(explained_variance)
+
+PCA with decision tree
+import numpy as np
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.decomposition import PCA
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Sample data (replace with your dataset)
+X, y = np.random.rand(100, 10), np.random.randint(2, size=100)
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Perform PCA dimension reduction
+n_components = 5  # Number of components to keep
+pca = PCA(n_components=n_components)
+X_train_pca = pca.fit_transform(X_train)
+X_test_pca = pca.transform(X_test)
+
+# Create and train a decision tree classifier
+clf = DecisionTreeClassifier()
+clf.fit(X_train_pca, y_train)
+
+# Make predictions
+y_pred = clf.predict(X_test_pca)
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy with PCA: {accuracy}")
+
+Accuracy
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(x,y, test_size=0.25,random_state=0)
+
+# Create the decision tree classifier
+clf = tree.DecisionTreeClassifier()
+
+# Train the decision tree classifier
+clf.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred = clf.predict(X_test)
+
+# Calculate the accuracy of the model
+accuracy = accuracy_score(y_test, y_pred)
+
+print('Accuracy:', accuracy)
