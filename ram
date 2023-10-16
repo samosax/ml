@@ -1,0 +1,61 @@
+import pandas as pd
+import numpy as np
+# from sklearn.datasets import load_iris
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.decomposition import PCA
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
+from sklearn.tree import plot_tree
+
+data = pd.read_csv('housing.csv')
+data.fillna(data.mean(), inplace=True)
+#print(data.corr())
+x=data.iloc[:,0:9]
+y=data.iloc[:,-1]
+
+# iris = load_iris()
+# x = iris.data  # Features
+# y = iris.target  # Target (labels)
+
+x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=0.2)
+
+# Specify the number of components (desired reduced dimension)
+n_components = 3  # Adjust as needed
+
+# Create an SVD object
+svd = PCA(n_components=n_components)
+
+# Fit and transform your data
+x_train_svd = svd.fit_transform(x_train)
+
+x_test_svd = svd.transform(x_test)
+
+# Create and train a decision tree classifier
+clf = DecisionTreeClassifier()
+clf.fit(x_train_svd, y_train)
+
+# Make predictions
+y_pred = clf.predict(x_test_svd)
+#print(x_test_svd)
+#y_out = clf.predict(np.array([5]).reshape(1,-1))
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy with SVD: {accuracy}")
+
+plt.figure(figsize=(12, 8))
+#plot_tree(clf, filled=True, feature_names=iris.feature_names, class_names=iris.target_names)
+plot_tree(clf,filled=True)
+plt.show()
+
+explained_variance = svd.explained_variance_ratio_
+#explained_variance = np.array([round(x,10) for x in svd.explained_variance_ratio_])
+cumulative_variance = explained_variance.cumsum()
+print(explained_variance)
+
+plt.plot(range(1, len(cumulative_variance)+1), cumulative_variance, marker='o')
+plt.xlabel('Number of Dimensions')
+plt.ylabel('Cumulative Explained Variance')
+plt.title('Scree Plot')
+plt.grid()
+plt.show()
